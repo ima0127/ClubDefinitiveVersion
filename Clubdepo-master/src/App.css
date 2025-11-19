@@ -1,0 +1,52 @@
+.Padre {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+}
+
+.tamano-imagen {
+  width: 100%;
+  height: 800px;
+  margin-top: 100px;
+  background-color: rgb(0, 8, 8);
+}
+
+.my-card {
+  border-radius: 20px; /* bordes redondeados */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* sombra */
+  background-color: #20212b; /* fondo personalizado */
+  padding: 2rem; /* más espacio interno */
+}
+
+.estilo-profile {
+  border-radius: 50%;
+  height: 120px;
+  width: 120px;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: rgba(175, 154, 154, 0.582);
+}
+.Cajatexto {
+  background-color: rgb(243, 237, 231);
+  border-color: slategray;
+  border-radius: 30px;
+  width: 100%;
+  padding: 15px;
+  border-width: 0px;
+  margin-bottom: 20px;
+}
+.Cajatexto:focus {
+  outline: 1px solid rgba(40, 95, 245, 0.726);
+  box-shadow: 0 0 10px;
+}
+.btnForm {
+  background-color: rgba(20, 43, 116, 0.884);
+  border-color: slategray;
+  border-radius: 30px;
+  width: 100%;
+  padding: 15px;
+  border-width: 0px;
+  margin-bottom: 20px;
+  color: white;
+}

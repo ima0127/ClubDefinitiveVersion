@@ -1,0 +1,137 @@
+/* ====== RESETEO GLOBAL ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #f5f6fa;
+}
+
+/* ====== HEADER COMPLETO ====== */
+.inscripcion-headercolor {
+  width: 100%;
+  background-color: #273c75;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  border-radius: 0;
+  margin: 0;
+  border: none;
+}
+
+/* Menú unido al header (sin espacio entre ambos) */
+.inscripcion-header-bottom {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1f2937; /* mismo color del header */
+  padding: 12px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  border-top: none;
+}
+
+/* Menú centrado */
+.inscripcion-menu-right ul {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Opciones del menú */
+.inscripcion-menu-right li {
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.inscripcion-menu-right li:hover {
+  color: #f1f1f1;
+  transform: translateY(-2px);
+}
+
+/* Links del menú */
+.inscripcion-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ====== CARD DE INSCRIPCIÓN ====== */
+.inscripcion-card {
+  background-color: white;
+  border-radius: 10px;
+  margin: 40px auto;
+  max-width: 500px;
+  padding: 20px;
+}
+
+/* ====== TÍTULO ====== */
+.inscripcion-title {
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* ====== FORMULARIO ====== */
+.inscripcion-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* ====== CAMPOS ESTILO COBROS ====== */
+.inscripcion-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.inscripcion-group label {
+  font-weight: 600;
+  color: #273c75;
+  margin-bottom: 6px;
+}
+
+.inscripcion-group input,
+.inscripcion-group select {
+  padding: 12px 15px;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #fafafa;
+}
+
+.inscripcion-group input:focus,
+.inscripcion-group select:focus {
+  border-color: #273c75;
+  outline: none;
+  box-shadow: 0 0 6px rgba(39, 60, 117, 0.25);
+  background-color: #fff;
+}
+
+/* Botón */
+.inscripcion-btn {
+  padding: 14px 22px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 140px;
+  border: none;
+  background-color: #273c75;
+  color: #fff;
+}
+
+.inscripcion-btn:hover {
+  background-color: #192a56;
+  transform: scale(1.05);
+}

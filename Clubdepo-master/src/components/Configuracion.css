@@ -1,0 +1,51 @@
+.config-container {
+  min-height: 100vh;
+  background-color: var(--fondo);
+  color: var(--texto);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.config-content {
+  text-align: center;
+  padding: 3rem;
+}
+
+.config-content h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.config-switch {
+  margin-top: 2rem;
+}
+
+.btn-tema {
+  margin-left: 1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: var(--boton);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-tema:hover {
+  opacity: 0.8;
+}
+
+/* 🔹 Temas por defecto (modo claro) */
+:root {
+  --fondo: #f8f9fa;
+  --texto: #222;
+  --boton: #007bff;
+}
+
+/* 🔹 Modo oscuro */
+body.modo-oscuro {
+  --fondo: #1c1c1c;
+  --texto: #e5e5e5;
+  --boton: #4444ff;
+  background-color: var(--fondo);
+  color: var(--texto);
+}

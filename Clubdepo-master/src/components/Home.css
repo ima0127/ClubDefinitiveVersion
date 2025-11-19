@@ -1,0 +1,114 @@
+/* --- Estructura general --- */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f0f2f5;
+  position: relative;
+}
+
+/* --- Header azul marino --- */
+.headercolor {
+  background-color: #273c75; /* azul marino oscuro */
+  color: white;
+  text-align: center;
+  padding: 20px 10px;
+  border-bottom: 3px solid #0366d6;
+}
+
+.headercolor h2 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.welcome {
+  font-size: 1rem;
+  margin-top: 8px;
+}
+
+.welcome span {
+  color: #7dc1ff;
+  font-weight: bold;
+}
+
+/* --- Mini menú horizontal debajo del header --- */
+.mini-menu {
+  background-color: #1f2937; /* tono azul marino intermedio */
+  padding: 10px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mini-menu ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+.mini-menu ul li {
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s, color 0.3s;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.mini-menu ul li:hover {
+  background-color: #0366d6;
+  color: #fff;
+}
+
+.logout {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+.logout:hover {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+/* --- Contenido principal --- */
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+/* --- Marca de agua (logo) --- */
+.watermark {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.watermark img {
+  width: 400px;
+  height: auto;
+  max-width: 70%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: inherit;
+  text-decoration: none;
+}

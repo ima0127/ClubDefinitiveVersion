@@ -1,0 +1,82 @@
+/* --- Contenedor principal de las reservas --- */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+}
+.rc-page{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* --- Tarjeta individual de reserva --- */
+.reserva-card {
+  background-color: #ffffff;
+  border: 1px solid #343333;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(6, 6, 6, 0.1);
+  width: 330px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease;
+}
+
+.reserva-card:hover {
+  transform: translateY(-4px);
+}
+
+/* --- Información general --- */
+.info-general p {
+  margin: 5px 0;
+}
+
+/* --- Caja de utensilios con scroll --- */
+.utensilios-box {
+  background-color: #f0f0f0;
+  padding: 10px 15px;
+  border-radius: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.utensilios-box h3 {
+  margin-top: 0;
+  font-size: 16px;
+  color: #273c75;
+}
+
+.utensilios-box ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+/* --- Botones de acción --- */
+.botones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.btnEditar {
+  background-color: #273c75;
+}
+
+.btnEditar:hover {
+  background-color: #1b2c57;
+}
+
+.btnEliminar {
+  background-color: #f44336;
+}
+
+.btnEliminar:hover {
+  background-color: #d32f2f;
+}
