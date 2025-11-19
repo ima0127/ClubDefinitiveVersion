@@ -27,19 +27,20 @@ const MostrarCobros = ({ correoUsuario }) => {
     cargarCobros();
   }, []);
 
-  const eliminarCobro = async (id) => {
+  const eliminarCobro = async (id_cobro) => {
     if (!window.confirm("¿Seguro que deseas eliminar este cobro?")) return;
 
     try {
       const res = await fetch(
-        `http://localhost/Backend/eliminar_cobro.php?id=${id}`,
-        { method: "DELETE" }
+        `http://localhost/Backend/eliminar_cobro.php?id=${id_cobro}`,
+        { method: "GET" }
       );
+
       const data = await res.json();
 
       if (data.mensaje) {
         alert("✅ " + data.mensaje);
-        cargarCobros(); // recarga la lista
+        cargarCobros();
       } else if (data.error) {
         alert("❌ " + data.error);
       }
@@ -73,7 +74,8 @@ const MostrarCobros = ({ correoUsuario }) => {
             <table className="usuarios-tabla">
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th>ID Cobro</th>
+                  <th>ID Socio</th>
                   <th>Socio</th>
                   <th>Monto</th>
                   <th>Fecha</th>
@@ -86,8 +88,9 @@ const MostrarCobros = ({ correoUsuario }) => {
               </thead>
               <tbody>
                 {cobros.map((cobro) => (
-                  <tr key={cobro.id}>
-                    <td>{cobro.id}</td>
+                  <tr key={cobro.id_cobro}>
+                    <td>{cobro.id_cobro}</td>
+                    <td>{cobro.id_socio}</td>
                     <td>{cobro.socio}</td>
                     <td>${parseFloat(cobro.monto).toFixed(2)}</td>
                     <td>{cobro.fecha}</td>
@@ -98,7 +101,7 @@ const MostrarCobros = ({ correoUsuario }) => {
                     <td>
                       <button
                         className="rc-btn rc-btn-reset"
-                        onClick={() => eliminarCobro(cobro.id)}
+                        onClick={() => eliminarCobro(cobro.id_cobro)}
                       >
                         Eliminar
                       </button>

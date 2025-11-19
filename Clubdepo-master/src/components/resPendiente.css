@@ -67,6 +67,10 @@
 
 .btnEditar {
   background-color: #273c75;
+  width: 120px;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
 }
 
 .btnEditar:hover {
@@ -75,6 +79,10 @@
 
 .btnEliminar {
   background-color: #f44336;
+  width: 120px;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
 }
 
 .btnEliminar:hover {

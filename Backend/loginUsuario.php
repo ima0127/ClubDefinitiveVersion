@@ -1,6 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Headers: Content-Type");
 
 include_once("conexion.php");
 
@@ -15,8 +16,8 @@ if (!$data) {
 $correo = $data["correo"];
 $contrasena = $data["contrasena"];
 
-// Buscar el usuario por correo
-$stmt = $conn->prepare("SELECT contrasena, rol FROM usuarios WHERE correo = ?");
+// Buscar usuario por correo
+$stmt = $conn->prepare("SELECT id, contrasena, rol FROM usuarios WHERE correo = ?");
 $stmt->bind_param("s", $correo);
 $stmt->execute();
 $stmt->store_result();
@@ -28,15 +29,17 @@ if ($stmt->num_rows === 0) {
     exit;
 }
 
-$stmt->bind_result($hash, $rol);
+$stmt->bind_result($id, $hashBD, $rol);
 $stmt->fetch();
 
-// Verificar contraseña (funciona con hash o texto plano)
-if ($contrasena === $hash || password_verify($contrasena, $hash)) {
+// Verificar contraseña (hash)
+if (password_verify($contrasena, $hashBD)) {
     echo json_encode([
         "success" => true,
         "message" => "Inicio de sesión exitoso",
-        "rol" => $rol
+        "correo" => $correo,
+        "rol" => $rol,
+        "id" => $id
     ]);
 } else {
     echo json_encode(["success" => false, "message" => "Contraseña incorrecta"]);

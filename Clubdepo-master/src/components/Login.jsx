@@ -29,10 +29,6 @@ const Login = () => {
         body: JSON.stringify({ correo, contrasena }),
       });
 
-      if (!response.ok) {
-        throw new Error(`Error HTTP: ${response.status}`);
-      }
-
       const data = await response.json();
 
       if (data.success) {
@@ -41,17 +37,21 @@ const Login = () => {
           setRegistrando(false);
         } else {
           alert("✅ Inicio de sesión exitoso");
+
+          // Guardar sesión
           localStorage.setItem("correoUsuario", correo);
-          navigate("/menu"); // redirige al menú principal
+
+          // Recargar para que App.jsx detecte sesión
+          window.location.reload();
         }
       } else {
-        alert("❌ " + (data.message || "Error al autenticar usuario."));
+        alert("❌ " + (data.message || "Usuario o contraseña incorrectos"));
       }
     } catch (error) {
       console.error("Error al autenticar:", error);
       alert(
         "⚠️ No se pudo conectar con el servidor PHP.\n" +
-        "Verifica que Apache esté activo y el archivo PHP exista en C:\\xampp\\htdocs\\Backend\\"
+          "Verifica que Apache esté activo y que los archivos estén en: C:\\xampp\\htdocs\\Backend\\"
       );
     }
   };
@@ -59,10 +59,11 @@ const Login = () => {
   return (
     <div className="container py-5">
       <div className="row justify-content-center align-items-center">
-        {/* Columna del login */}
+
         <div className="col-md-4 mb-4">
           <div className="Padre d-flex justify-content-center">
             <div className="card card-body shadow-lg border-0 rounded-4 text-center">
+
               <img
                 src={ImagenProfile}
                 alt="Usuario"
@@ -76,16 +77,18 @@ const Login = () => {
                   type="email"
                   placeholder="Ingresar Email"
                   className="form-control Cajatexto"
-                  id="email"
+                  name="email"
                   required
                 />
+
                 <input
                   type="password"
                   placeholder="Ingresar Contraseña"
                   className="form-control Cajatexto"
-                  id="password"
+                  name="password"
                   required
                 />
+
                 <button type="submit" className="btn btn-primary btnForm">
                   {registrando ? "Registrarte" : "Iniciar Sesión"}
                 </button>
@@ -94,6 +97,7 @@ const Login = () => {
               <h5 className="mt-4 fw-semibold">
                 {registrando ? "¿Ya tienes cuenta?" : "¿No tienes cuenta?"}
               </h5>
+
               <button
                 className="btn btn-outline-secondary w-75 mt-2"
                 onClick={() => setRegistrando(!registrando)}
@@ -104,7 +108,6 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Columna del logo */}
         <div className="col-md-8 text-center">
           <img
             src={Imagen}
@@ -112,6 +115,7 @@ const Login = () => {
             className="tamano-imagen img-fluid rounded-4 shadow-sm"
           />
         </div>
+
       </div>
     </div>
   );

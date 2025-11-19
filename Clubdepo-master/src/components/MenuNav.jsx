@@ -5,10 +5,12 @@ import "./MenuNav.css";
 const MenuNav = ({ correoUsuario }) => {
   const navigate = useNavigate();
 
-  // Simula el cierre de sesión (luego se reemplazará con el backend PHP)
+  // Cierre de sesión con localStorage
   const handleLogout = () => {
-    alert("👋 Sesión cerrada correctamente");
-    navigate("/"); // Redirige al login
+    localStorage.removeItem("correoUsuario"); // eliminar sesión
+
+    navigate("/");  // ir al login
+    window.location.reload(); // recargar App.jsx para que detecte que no hay usuario
   };
 
   return (
@@ -33,6 +35,8 @@ const MenuNav = ({ correoUsuario }) => {
           <li onClick={() => navigate("/registrocobros")}>Cobros</li>
           <li onClick={() => navigate("/reservas")}>Reservas</li>
           <li onClick={() => navigate("/configuracion")}>Configuración</li>
+
+          {/* 🔥 Botón de Cerrar Sesión */}
           <li onClick={handleLogout} className="logout">
             Cerrar Sesión
           </li>
