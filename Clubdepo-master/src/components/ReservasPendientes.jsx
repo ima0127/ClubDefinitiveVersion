@@ -2,60 +2,144 @@ import React, { useState, useEffect } from "react";
 import "./reservas.css";
 import "./resPendiente.css";
 
+const opcionesUtensilios = [
+  "ChalecosFlotadores",
+  "KitCumpleanos",
+  "PelotasBasquet",
+  "BateBeisbol",
+  "PelotasBeisbol",
+  "GuantesBeisbol",
+  "PelotasFutbol",
+  "PelotasTenis",
+  "PelotaVoleibol",
+  "RaquetasTenis",
+  "RedVoleibol",
+  "Tobogan",
+  "FlotadoresInfantiles",
+  "EquipoSonido",
+  "SillasExtras",
+  "MesasExtras",
+];
+
+const opcionesFacilidades = [
+  "Basquet",
+  "Beisbol",
+  "Futbol",
+  "Tenis",
+  "Beisbol",
+  "Voleibol",
+  "Piscina",
+  "Eventos",
+  "Gimnasio",
+  "ParqueInfantil",
+];
+
 const ReservasPendientes = () => {
   const [reservas, setReservas] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Cargar reservas pendientes desde PHP
+  // popup
+  const [mostrarPopup, setMostrarPopup] = useState(false);
+  const [reservaEditar, setReservaEditar] = useState(null);
+  const [utensiliosEditar, setUtensiliosEditar] = useState([]);
+
+  // cargar reservas
   useEffect(() => {
-    fetch("http://localhost/Backend/obtener_reservas_pendientes.php") // ← ruta corregida
-      .then((res) => {
-        if (!res.ok) throw new Error("Error al obtener las reservas pendientes");
-        return res.json();
-      })
+    fetch("http://localhost/Backend/obtener_reservas_pendientes.php")
+      .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
-          setReservas(data);
-        } else {
-          console.error("Respuesta inesperada:", data);
-          setReservas([]);
-        }
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-        setReservas([]);
+        if (Array.isArray(data)) setReservas(data);
       })
       .finally(() => setLoading(false));
   }, []);
 
-  // 🔹 Modificar reserva (en el futuro puedes abrir un formulario o modal)
+  // abrir popup con utensilios incluidos
   const editarReserva = (id) => {
-    alert(`✏️ Editar reserva con ID: ${id}`);
+    const res = reservas.find((r) => r.id === id);
+    setReservaEditar(res);
+
+    // mapear utensilios
+    const uts = res.utensilios.map((u, index) => ({
+      nombre: u,
+      cantidad: res.cantidades[index] || 1,
+    }));
+
+    setUtensiliosEditar(uts);
+    setMostrarPopup(true);
   };
 
-  // 🔹 Eliminar / cancelar reserva
+  // agregar utensilio
+  const agregarUtensilio = () => {
+    if (utensiliosEditar.length >= 3) {
+      alert("Máximo 3 utensilios.");
+      return;
+    }
+    setUtensiliosEditar([...utensiliosEditar, { nombre: "", cantidad: 1 }]);
+  };
+
+  // modificar utensilio
+  const cambiarUtensilio = (index, campo, valor) => {
+    const copia = [...utensiliosEditar];
+    copia[index][campo] = valor;
+    setUtensiliosEditar(copia);
+  };
+
+  // eliminar utensilio
+  const quitarUtensilio = (index) => {
+    setUtensiliosEditar(utensiliosEditar.filter((_, i) => i !== index));
+  };
+
+  // guardar changes
+  const guardarCambios = async (e) => {
+    e.preventDefault();
+
+    const form = new FormData(e.target);
+
+    const data = {
+      id: reservaEditar.id,
+      fecha: form.get("fecha"),
+      hora: form.get("hora"),
+      duracion: form.get("duracion"),
+      facilidad: form.get("facilidad"),
+      utensilios: utensiliosEditar.map((u) => u.nombre),
+      cantidades: utensiliosEditar.map((u) => u.cantidad),
+    };
+
+    const response = await fetch("http://localhost/Backend/editar_reserva.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      alert("Reserva actualizada correctamente");
+
+      setReservas((prev) =>
+        prev.map((r) =>
+          r.id === data.id ? { ...r, ...data } : r
+        )
+      );
+
+      setMostrarPopup(false);
+    } else {
+      alert("Error al actualizar la reserva.");
+    }
+  };
+
   const eliminarReserva = (id) => {
-    const confirmar = window.confirm("¿Desea cancelar esta reserva?");
-    if (!confirmar) return;
+    if (!window.confirm("¿Desea cancelar esta reserva?")) return;
 
     fetch(`http://localhost/Backend/eliminar_reserva.php?id=${id}`, {
       method: "DELETE",
     })
-      .then((res) => {
-        if (!res.ok) throw new Error("Error en la respuesta del servidor");
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
         if (data.success) {
           setReservas((prev) => prev.filter((r) => r.id !== id));
-          alert("✅ Reserva cancelada correctamente");
-        } else {
-          alert("❌ Error al cancelar la reserva: " + (data.error || ""));
+          alert("Reserva cancelada");
         }
-      })
-      .catch((err) => {
-        console.error("Error al cancelar:", err);
-        alert("⚠️ No se pudo conectar con el servidor.");
       });
   };
 
@@ -65,63 +149,33 @@ const ReservasPendientes = () => {
         <h1 className="titulo-apartado">Reservas Pendientes</h1>
       </header>
 
-      <main className="container">
-        {loading && <p>Cargando reservas...</p>}
-        {!loading && reservas.length === 0 && <p>No hay reservas pendientes.</p>}
+      {loading && <p>Cargando...</p>}
+      {!loading && reservas.length === 0 && <p>No hay reservas pendientes.</p>}
 
+      <main className="container">
         {reservas.map((reserva) => (
           <section className="reserva-card" key={reserva.id}>
-           <h2>Reserva del Socio {reserva.socio}</h2>
+            <h2>Reserva del Socio {reserva.socio}</h2>
 
             <div className="info-general">
-              <p>
-                <strong>Facilidad:</strong>{" "}
-                {reserva.facilidad && reserva.facilidad !== "" ? reserva.facilidad : "—"}
-              </p>
-              <p>
-                <strong>Fecha:</strong> {reserva.fecha}
-              </p>
-              <p>
-                <strong>Hora de inicio:</strong> {reserva.hora}
-              </p>
-              <p>
-                <strong>Duración:</strong> {reserva.duracion} hora(s)
-              </p>
-              <p>
-                <strong>Estado:</strong>{" "}
-                <span
-                  style={{
-                    color:
-                      reserva.estado === "Pendiente"
-                        ? "orange"
-                        : reserva.estado === "Hecha"
-                        ? "green"
-                        : "red",
-                  }}
-                >
-                  {reserva.estado}
-                </span>
-              </p>
-            </div>
+              <p><strong>Facilidad:</strong> {reserva.facilidad}</p>
+              <p><strong>Fecha:</strong> {reserva.fecha}</p>
+              <p><strong>Hora:</strong> {reserva.hora}</p>
+              <p><strong>Duración:</strong> {reserva.duracion} hora(s)</p>
 
-            {reserva.utensilios && reserva.utensilios.length > 0 && (
-              <div className="utensilios-box">
-                <h3>Utensilios Reservados</h3>
-                <ul>
-                  {reserva.utensilios.map((item, index) => (
-                    <li key={index}>
-                      {item} —{" "}
-                      <strong>
-                        {reserva.cantidades && reserva.cantidades[index]
-                          ? reserva.cantidades[index]
-                          : "1"}{" "}
-                        unidad(es)
-                      </strong>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+              {reserva.utensilios.length > 0 && (
+                <>
+                  <strong>Utensilios:</strong>
+                  <ul>
+                    {reserva.utensilios.map((u, i) => (
+                      <li key={i}>
+                        {u} ({reserva.cantidades[i]})
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
 
             <div className="botones">
               <button className="btnEditar" onClick={() => editarReserva(reserva.id)}>
@@ -134,6 +188,70 @@ const ReservasPendientes = () => {
           </section>
         ))}
       </main>
+
+      {mostrarPopup && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+
+            <h2>Editar Reserva</h2>
+            <button className="popup-close" onClick={() => setMostrarPopup(false)}>X</button>
+
+            <form onSubmit={guardarCambios} className="form-editar">
+
+              <label>Fecha:</label>
+              <input type="date" name="fecha" defaultValue={reservaEditar.fecha} required />
+
+              <label>Hora:</label>
+              <input type="time" name="hora" defaultValue={reservaEditar.hora} required />
+
+              <label>Duración:</label>
+              <select name="duracion" defaultValue={reservaEditar.duracion}>
+                {[1,2,3,4,5].map((d) => <option key={d} value={d}>{d}</option>)}
+              </select>
+
+              <label>Facilidad:</label>
+              <select name="facilidad" defaultValue={reservaEditar.facilidad}>
+                {opcionesFacilidades.map((f) => (
+                  <option key={f} value={f}>{f}</option>
+                ))}
+              </select>
+
+              <hr />
+
+              <h3>Utensilios</h3>
+
+              {utensiliosEditar.map((u, index) => (
+                <div className="grupo-utensilio" key={index}>
+                  <select
+                    value={u.nombre}
+                    onChange={(e) => cambiarUtensilio(index, "nombre", e.target.value)}
+                  >
+                    <option value="">Seleccione</option>
+                    {opcionesUtensilios.map((opt) => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+
+                  <input
+                    type="number"
+                    min="1"
+                    max="5"
+                    value={u.cantidad}
+                    onChange={(e) => cambiarUtensilio(index, "cantidad", e.target.value)}
+                  />
+
+                  <button type="button" onClick={() => quitarUtensilio(index)}>X</button>
+                </div>
+              ))}
+
+              <button type="button" className="btn-add" onClick={agregarUtensilio}>+ Agregar</button>
+
+              <button type="submit" className="btnGuardar">Guardar Cambios</button>
+            </form>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 };

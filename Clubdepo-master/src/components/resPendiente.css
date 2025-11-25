@@ -88,3 +88,54 @@
 .btnEliminar:hover {
   background-color: #d32f2f;
 }
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  width: 400px;
+  border-radius: 12px;
+  position: relative;
+}
+
+.popup-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.form-editar input,
+.form-editar select {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 6px;
+}
+
+.btnGuardar {
+  width: 100%;
+  background: green;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+

@@ -27,11 +27,11 @@ const Reservas = () => {
     );
   };
 
-  // 🔹 Calcular hora de fin automáticamente
+  // 🔹 Calcular hora de fin (FORMATO TIME)
   const calcularHoraFin = (horaInicio, duracion) => {
     const [h] = horaInicio.split(":").map(Number);
     const fin = h + parseInt(duracion);
-    return `${fin}:00`;
+    return `${fin.toString().padStart(2, "0")}:00:00`; // FORMATO CORRECTO PARA MYSQL
   };
 
   // 🔹 Enviar formulario al backend
@@ -47,10 +47,12 @@ const Reservas = () => {
       fecha_reserva: e.target.fecha_reserva.value,
       hora_inicio: horaInicio,
       hora_fin: horaFin,
-      area: mostrarFacilidades ? e.target.facilidad?.value : "General",
-      estado: "Pendiente",
+      area: mostrarFacilidades ? e.target.facilidad.value : "General",
+      estado: "pendiente",
       descripcion: mostrarUtensilios
-        ? `Utensilios: ${utensilios.map((u) => `${u.value} (${u.cantidad})`).join(", ")}`
+        ? `Utensilios: ${utensilios
+            .map((u) => `${u.value}(${u.cantidad})`)
+            .join(", ")}`
         : "Sin utensilios",
     };
 
@@ -81,10 +83,7 @@ const Reservas = () => {
       }
     } catch (error) {
       console.error("Error al enviar la reserva:", error);
-      alert(
-        "⚠️ No se pudo conectar con el servidor.\n" +
-          "Verifica que Apache esté activo y que reservas.php exista en C:\\xampp\\htdocs\\Backend\\"
-      );
+      alert("⚠️ Error al conectar con el servidor.");
     }
   };
 
@@ -101,19 +100,20 @@ const Reservas = () => {
         <h1 className="titulo-apartado">Reservas</h1>
 
         <form onSubmit={handleSubmit} onReset={handleReset} className="rc-form">
+
           {/* ID Socio */}
           <div className="rc-field">
             <label className="rc-label">ID Socio:</label>
             <input type="text" id="socio" name="socio" required className="rc-input" />
           </div>
 
-          {/* Fecha de reserva */}
+          {/* Fecha */}
           <div className="rc-field">
             <label className="rc-label">Fecha de reserva:</label>
             <input type="date" id="fecha_reserva" name="fecha_reserva" required className="rc-input" />
           </div>
 
-          {/* Tipo de reserva */}
+          {/* Tipo */}
           <p className="rc-label">¿Qué desea reservar?</p>
           <div className="rc-checkboxes">
             <label>
@@ -121,7 +121,7 @@ const Reservas = () => {
                 type="checkbox"
                 checked={mostrarFacilidades}
                 onChange={() => setMostrarFacilidades(!mostrarFacilidades)}
-              />{" "}
+              /> 
               Facilidades
             </label>
 
@@ -130,7 +130,7 @@ const Reservas = () => {
                 type="checkbox"
                 checked={mostrarUtensilios}
                 onChange={() => setMostrarUtensilios(!mostrarUtensilios)}
-              />{" "}
+              /> 
               Utensilios
             </label>
           </div>
@@ -139,17 +139,17 @@ const Reservas = () => {
           {mostrarFacilidades && (
             <div className="rc-field">
               <label className="rc-label">Tipo de facilidad:</label>
-              <select id="facilidad" name="facilidad" className="rc-select">
+              <select id="facilidad" name="facilidad" className="rc-select" required>
                 <option value="">Seleccione una facilidad</option>
-                <option value="basquet">Básquet</option>
-                <option value="futbol">Fútbol</option>
-                <option value="tenis">Tenis</option>
-                <option value="beisbol">Béisbol</option>
-                <option value="voleibol">Voleibol</option>
-                <option value="piscina">Piscina</option>
-                <option value="eventos">Área de eventos</option>
-                <option value="gimnasio">Gimnasio</option>
-                <option value="parqueInfantil">Parque infantil</option>
+                <option value="Basquet">Básquet</option>
+                <option value="Beisbol">Béisbol</option>
+                <option value="Futbol">Fútbol</option>
+                <option value="Tenis">Tenis</option>
+                <option value="Voleibol">Voleibol</option>
+                <option value="Piscina">Piscina</option>
+                <option value="Eventos">Área de eventos</option>
+                <option value="Gimnasio">Gimnasio</option>
+                <option value="ParqueInfantil">Parque infantil</option>
               </select>
             </div>
           )}
@@ -166,19 +166,22 @@ const Reservas = () => {
                     className="rc-select"
                   >
                     <option value="">Seleccione un utensilio</option>
-                    <option value="chalecosFlotadores">Chalecos flotadores</option>
-                    <option value="kitCumpleanos">Kit de cumpleaños</option>
-                    <option value="pelotasBasquet">Pelotas de básquet</option>
-                    <option value="pelotasFutbol">Pelotas de fútbol</option>
-                    <option value="pelotasTenis">Pelotas de tenis</option>
-                    <option value="pelotaVoleibol">Pelota de voleibol</option>
-                    <option value="raquetas">Raquetas</option>
-                    <option value="redVoleibol">Red de voleibol</option>
-                    <option value="tobogan">Tobogán infantil</option>
-                    <option value="flotadoresInfantiles">Flotadores infantiles</option>
-                    <option value="equipoSonido">Equipo de sonido</option>
-                    <option value="sillasExtras">Sillas extras</option>
-                    <option value="mesasExtras">Mesas extras</option>
+                    <option value="ChalecosFlotadores">Chalecos flotadores</option>
+                    <option value="KitCumpleanos">Kit de cumpleaños</option>
+                    <option value="PelotasBasquet">Pelotas de básquet</option>
+                    <option value="BateBeisbol">Bate de béisbol</option>
+                    <option value="PelotasBeisbol">Pelotas de béisbol</option>
+                    <option value="GuantesBeisbol">Guantes de béisbol</option>
+                    <option value="PelotasFutbol">Pelotas de fútbol</option>
+                    <option value="PelotasTenis">Pelotas de tenis</option>
+                    <option value="PelotaVoleibol">Pelota de voleibol</option>
+                    <option value="RaquetasTenis">Raquetas de tenis</option>
+                    <option value="RedVoleibol">Red de voleibol</option>
+                    <option value="Tobogan">Tobogán infantil</option>
+                    <option value="FlotadoresInfantiles">Flotadores infantiles</option>
+                    <option value="EquipoSonido">Equipo de sonido</option>
+                    <option value="SillasExtras">Sillas extras</option>
+                    <option value="MesasExtras">Mesas extras</option>
                   </select>
 
                   <label className="rc-label">Cantidad:</label>
@@ -210,12 +213,12 @@ const Reservas = () => {
             </div>
           )}
 
-          {/* Hora de inicio */}
+          {/* Hora */}
           <div className="rc-field">
             <label className="rc-label">Hora de inicio:</label>
             <select id="hora" name="hora" className="rc-select">
               {Array.from({ length: 10 }, (_, i) => i + 8).map((h) => (
-                <option key={h} value={`${h}:00`}>
+                <option key={h} value={`${h.toString().padStart(2, "0")}:00:00`}>
                   {h}:00
                 </option>
               ))}
@@ -224,7 +227,7 @@ const Reservas = () => {
 
           {/* Duración */}
           <div className="rc-field">
-            <label className="rc-label">Duración (en horas, máx. 5):</label>
+            <label className="rc-label">Duración (máx. 5 horas):</label>
             <select id="duracion" name="duracion" className="rc-select">
               {[1, 2, 3, 4, 5].map((d) => (
                 <option key={d} value={d}>
@@ -243,6 +246,7 @@ const Reservas = () => {
               Borrar
             </button>
           </div>
+
         </form>
       </div>
     </div>
