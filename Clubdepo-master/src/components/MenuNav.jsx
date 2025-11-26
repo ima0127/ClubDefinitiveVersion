@@ -9,7 +9,7 @@ const MenuNav = ({ correoUsuario }) => {
   const handleLogout = () => {
     localStorage.removeItem("correoUsuario"); // eliminar sesión
 
-    navigate("/");  // ir al login
+    navigate("/"); // ir al login
     window.location.reload(); // recargar App.jsx para que detecte que no hay usuario
   };
 
@@ -28,10 +28,12 @@ const MenuNav = ({ correoUsuario }) => {
       {/* Menú principal */}
       <nav className="mini-menu">
         <ul>
+          <li onClick={() => navigate("/")}>Home</li>
           <li onClick={() => navigate("/inscripcion")}>
             Inscripción de Socios
           </li>
-          <li onClick={() => navigate("/usuarios")}>Usuarios Registrados</li>
+
+          <li onClick={() => navigate("/")}>Socios registrados</li>
           <li onClick={() => navigate("/registrocobros")}>Cobros</li>
           <li onClick={() => navigate("/reservas")}>Reservas</li>
           <li onClick={() => navigate("/configuracion")}>Configuración</li>
