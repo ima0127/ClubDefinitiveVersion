@@ -33,7 +33,7 @@ const MenuNav = ({ correoUsuario }) => {
             Inscripción de Socios
           </li>
 
-          <li onClick={() => navigate("/")}>Socios registrados</li>
+          <li onClick={() => navigate("/usuarios")}>Socios registrados</li>
           <li onClick={() => navigate("/registrocobros")}>Cobros</li>
           <li onClick={() => navigate("/reservas")}>Reservas</li>
           <li onClick={() => navigate("/configuracion")}>Configuración</li>
